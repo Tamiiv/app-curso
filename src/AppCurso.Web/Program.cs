@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -83,6 +84,12 @@ builder.Services.AddRateLimiter(options =>
 });
 
 builder.Services.AddHealthChecks();
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes;
+});
 
 var connectionString = DatabaseConnection.Resolve(builder.Configuration);
 if (connectionString is not null)
@@ -161,6 +168,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseResponseCompression();
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 app.UseRateLimiter();

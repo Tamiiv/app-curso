@@ -101,6 +101,21 @@ public sealed class WebAppSmokeTests : IClassFixture<WebApplicationFactory<Progr
     }
 
     [Fact]
+    public async Task HtmlResponsesAreCompressedWhenTheClientAcceptsIt()
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/");
+        request.Headers.AcceptEncoding.ParseAdd("br, gzip");
+
+        var response = await _client.SendAsync(request);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.NotNull(response.Content.Headers.ContentEncoding);
+        Assert.Contains(
+            response.Content.Headers.ContentEncoding,
+            encoding => encoding is "br" or "gzip");
+    }
+
+    [Fact]
     public async Task HealthEndpointReportsHealthy()
     {
         var response = await _client.GetAsync("/health");

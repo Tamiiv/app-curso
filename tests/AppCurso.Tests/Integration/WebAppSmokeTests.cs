@@ -63,6 +63,8 @@ public sealed class WebAppSmokeTests : IClassFixture<WebApplicationFactory<Progr
         Assert.Contains("/modulos/como-usar/progreso-marcadores", xml);
         Assert.Contains("/modulos/como-usar/como-practicar", xml);
         Assert.Contains("/modulos/poo/clases-objetos", xml);
+        Assert.Contains("/privacidad", xml);
+        Assert.Contains("/terminos", xml);
     }
 
     [Fact]
@@ -82,6 +84,20 @@ public sealed class WebAppSmokeTests : IClassFixture<WebApplicationFactory<Progr
         var response = await _client.GetAsync("/modulos/modulo-inexistente");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Theory]
+    [InlineData("/privacidad", "Política de privacidad")]
+    [InlineData("/terminos", "Términos de uso")]
+    public async Task LegalPagesRender(string path, string heading)
+    {
+        var response = await _client.GetAsync(path);
+        var html = await response.Content.ReadAsStringAsync();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Contains(heading, html);
+        Assert.Contains("href=\"/privacidad\"", html);
+        Assert.Contains("href=\"/terminos\"", html);
     }
 
     [Fact]

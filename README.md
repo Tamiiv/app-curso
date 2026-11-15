@@ -132,6 +132,7 @@ Notas del plan gratuito:
 - [Arquitectura](docs/02-arquitectura.md)
 - [Temario](docs/03-temario.md)
 - [Roadmap](docs/04-roadmap.md)
+- [Operaciones: deploy, backups y monitoreo](docs/06-operaciones.md)
 
 ## Licencia
 

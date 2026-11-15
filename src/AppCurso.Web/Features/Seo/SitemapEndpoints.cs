@@ -14,7 +14,7 @@ public static class SitemapEndpoints
             var baseUrl = ResolveBaseUrl(context, configuration);
             var ns = XNamespace.Get("http://www.sitemaps.org/schemas/sitemap/0.9");
 
-            var urls = new List<string> { "/", "/modulos", "/buscar" };
+            var urls = new List<string> { "/", "/modulos", "/buscar", "/privacidad", "/terminos" };
 
             foreach (var module in catalog.Modules)
             {

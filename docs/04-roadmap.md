@@ -154,7 +154,7 @@ Las estimaciones suponen dedicación casi completa y son orientativas. El conten
 
 ## Fase 5 — Calidad y lanzamiento
 
-**Estado:** en curso. Tests unitarios de contenido, progreso y marcadores, más smoke tests e integración de registro, login y logout, completados. Accesibilidad base y cabeceras de seguridad aplicadas; faltan auditoría con lector de pantalla, Lighthouse y backups.
+**Estado:** en curso. Tests unitarios de contenido, progreso y marcadores, más smoke tests e integración de registro, login y logout, completados. Accesibilidad base, cabeceras de seguridad, páginas legales y runbook de backups y monitoreo aplicados; faltan auditoría con lector de pantalla, Lighthouse y licencia del repositorio.
 
 **Objetivo:** publicar una V1 sólida y presentable.
 
@@ -235,10 +235,11 @@ Una tarea está terminada cuando:
 
 Terminar la Fase 1:
 
-1. Crear el proyecto y la rama `dev` en Neon.
+1. Crear la base `main` y la rama `dev` en Neon.
 2. Cargar `DATABASE_URL` en local con user-secrets, ejecutar `dotnet ef database update` y verificar `/health/ready`.
-3. Subir el repositorio a GitHub y conectar Render con `render.yaml`.
+3. Conectar Render con `render.yaml` (el repositorio ya está en GitHub).
 4. Verificar la URL pública, el health check y que `Database__MigrateOnStartup` aplique el esquema.
 5. Confirmar que el CI pasa en verde.
+6. Configurar backups y el monitor externo según [Operaciones](06-operaciones.md).
 
-Después se continúa la Fase 5 con auditoría manual de accesibilidad con lector de pantalla, Lighthouse, backups y monitoreo.
+Después se cierra la Fase 5 con auditoría manual de accesibilidad con lector de pantalla, Lighthouse, licencia del repositorio y lanzamiento.

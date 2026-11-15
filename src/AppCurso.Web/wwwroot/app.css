@@ -470,6 +470,22 @@ button, input {
     margin: 0;
 }
 
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: var(--brand);
+    text-decoration: underline;
+}
+
 /* =========================================================
    Home
    ========================================================= */

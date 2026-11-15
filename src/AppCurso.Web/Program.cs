@@ -137,6 +137,23 @@ else if (builder.Configuration.GetValue<bool>("Database:MigrateOnStartup"))
     await db.Database.MigrateAsync();
 }
 
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        var headers = context.Response.Headers;
+        headers["X-Content-Type-Options"] = "nosniff";
+        headers["X-Frame-Options"] = "DENY";
+        headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+        headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+        headers["Cross-Origin-Opener-Policy"] = "same-origin";
+        headers["Content-Security-Policy"] = "frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
+        return Task.CompletedTask;
+    });
+
+    await next();
+});
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

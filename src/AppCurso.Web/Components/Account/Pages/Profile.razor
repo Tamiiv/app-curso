@@ -72,7 +72,12 @@ else
                                 <strong>@module.Module.Title</strong>
                                 <span>@module.CompletedLessons / @module.TotalLessons</span>
                             </span>
-                            <span class="progress-track progress-track-small">
+                            <span class="progress-track progress-track-small"
+                                  role="progressbar"
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"
+                                  aria-valuenow="@module.Percent"
+                                  aria-label="@($"{module.Module.Title}: {module.Percent}% completado")">
                                 <span class="progress-fill" style="width:@(module.Percent)%"></span>
                             </span>
                         </span>

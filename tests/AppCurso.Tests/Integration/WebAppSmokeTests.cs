@@ -24,6 +24,22 @@ public sealed class WebAppSmokeTests : IClassFixture<WebApplicationFactory<Progr
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Contains("De cero a profesional", html);
+        Assert.Contains("name=\"color-scheme\"", html);
+    }
+
+    [Fact]
+    public async Task ResponsesIncludeSecurityHeaders()
+    {
+        var response = await _client.GetAsync("/");
+
+        Assert.Equal("nosniff", response.Headers.GetValues("X-Content-Type-Options").Single());
+        Assert.Equal("DENY", response.Headers.GetValues("X-Frame-Options").Single());
+        Assert.Equal(
+            "strict-origin-when-cross-origin",
+            response.Headers.GetValues("Referrer-Policy").Single());
+        Assert.Contains(
+            "frame-ancestors 'none'",
+            response.Headers.GetValues("Content-Security-Policy").Single());
     }
 
     [Fact]

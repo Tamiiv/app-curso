@@ -154,7 +154,7 @@ Las estimaciones suponen dedicación casi completa y son orientativas. El conten
 
 ## Fase 5 — Calidad y lanzamiento
 
-**Estado:** en curso. Tests unitarios de contenido, progreso y marcadores, más smoke tests e integración de registro, login y logout, completados.
+**Estado:** en curso. Tests unitarios de contenido, progreso y marcadores, más smoke tests e integración de registro, login y logout, completados. Accesibilidad base y cabeceras de seguridad aplicadas; faltan auditoría con lector de pantalla, Lighthouse y backups.
 
 **Objetivo:** publicar una V1 sólida y presentable.
 
@@ -241,4 +241,4 @@ Terminar la Fase 1:
 4. Verificar la URL pública, el health check y que `Database__MigrateOnStartup` aplique el esquema.
 5. Confirmar que el CI pasa en verde.
 
-Después se continúa la Fase 5 con auditoría de accesibilidad, rendimiento, revisión de seguridad y backups.
+Después se continúa la Fase 5 con auditoría manual de accesibilidad con lector de pantalla, Lighthouse, backups y monitoreo.

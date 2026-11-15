@@ -2,6 +2,8 @@
     "use strict";
 
     const root = document.documentElement;
+    const mobileQuery = window.matchMedia("(max-width: 900px)");
+    let liveRegion;
 
     function updateThemeButton(theme) {
         const button = document.getElementById("theme-toggle");
@@ -26,13 +28,68 @@
         updateThemeButton(theme);
     }
 
-    function closeMenu() {
+    function syncSidebarState() {
+        const sidebar = document.getElementById("sidebar");
+        if (!sidebar) {
+            return;
+        }
+
+        if (mobileQuery.matches && !sidebar.classList.contains("open")) {
+            sidebar.setAttribute("inert", "");
+        } else {
+            sidebar.removeAttribute("inert");
+        }
+    }
+
+    function closeMenu(returnFocus) {
         const sidebar = document.getElementById("sidebar");
         const menuButton = document.getElementById("menu-toggle");
 
         sidebar?.classList.remove("open");
         menuButton?.setAttribute("aria-expanded", "false");
         menuButton?.setAttribute("aria-label", "Abrir menú");
+        syncSidebarState();
+
+        if (returnFocus) {
+            menuButton?.focus();
+        }
+    }
+
+    function openMenu() {
+        const sidebar = document.getElementById("sidebar");
+        const menuButton = document.getElementById("menu-toggle");
+
+        if (!sidebar || !menuButton) {
+            return;
+        }
+
+        sidebar.classList.add("open");
+        sidebar.removeAttribute("inert");
+        menuButton.setAttribute("aria-expanded", "true");
+        menuButton.setAttribute("aria-label", "Cerrar menú");
+
+        sidebar.querySelector("a")?.focus();
+    }
+
+    function getLiveRegion() {
+        if (liveRegion) {
+            return liveRegion;
+        }
+
+        liveRegion = document.createElement("span");
+        liveRegion.className = "visually-hidden";
+        liveRegion.setAttribute("role", "status");
+        liveRegion.setAttribute("aria-live", "polite");
+        document.body.appendChild(liveRegion);
+        return liveRegion;
+    }
+
+    function announce(message) {
+        const region = getLiveRegion();
+        region.textContent = "";
+        window.setTimeout(function () {
+            region.textContent = message;
+        }, 50);
     }
 
     async function copyText(text) {
@@ -62,6 +119,7 @@
             button.type = "button";
             button.className = "code-copy";
             button.textContent = "Copiar";
+            button.title = "Copiar bloque de código";
             button.setAttribute("aria-label", "Copiar bloque de código");
 
             button.addEventListener("click", async function () {
@@ -72,8 +130,10 @@
                     await copyText(text);
                     button.textContent = "Copiado";
                     button.classList.add("is-copied");
+                    announce("Código copiado al portapapeles.");
                 } catch (error) {
                     button.textContent = "No se pudo";
+                    announce("No se pudo copiar el código.");
                 }
 
                 window.setTimeout(function () {
@@ -88,7 +148,7 @@
 
     function onEnhancedLoad() {
         updateThemeButton(root.dataset.theme || "light");
-        closeMenu();
+        closeMenu(false);
         enhanceCodeBlocks();
     }
 
@@ -104,30 +164,37 @@
 
         if (event.target.closest("#menu-toggle")) {
             const sidebar = document.getElementById("sidebar");
-            const menuButton = document.getElementById("menu-toggle");
 
-            if (!sidebar || !menuButton) {
+            if (!sidebar) {
                 return;
             }
 
-            const isOpen = sidebar.classList.toggle("open");
-            menuButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            menuButton.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+            if (sidebar.classList.contains("open")) {
+                closeMenu(true);
+            } else {
+                openMenu();
+            }
+
             return;
         }
 
         if (event.target.closest("#sidebar a")) {
-            closeMenu();
+            closeMenu(false);
         }
     });
 
     document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
-            closeMenu();
+            closeMenu(true);
         }
     });
 
+    mobileQuery.addEventListener?.("change", function () {
+        closeMenu(false);
+    });
+
     updateThemeButton(root.dataset.theme || "light");
+    syncSidebarState();
     enhanceCodeBlocks();
 
     if (window.Blazor) {

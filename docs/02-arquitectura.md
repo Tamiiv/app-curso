@@ -290,6 +290,7 @@ Si el contenido crece mucho, se migra a PostgreSQL Full-Text Search o a un índi
 ## 11. Seguridad
 
 - HTTPS obligatorio y HSTS en producción.
+- Cabeceras de seguridad: `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, COOP y CSP mínima con `frame-ancestors`.
 - Identity maneja hash de contraseñas y tokens.
 - Anti-forgery en formularios.
 - Rate limiting en login, registro y recuperación de contraseña.

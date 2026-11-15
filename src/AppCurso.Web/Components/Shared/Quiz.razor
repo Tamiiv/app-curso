@@ -36,7 +36,9 @@
 
                 @if (submitted)
                 {
-                    <p class="quiz-feedback @(IsCorrect(index) ? "is-correct" : "is-wrong")">
+                    <p class="quiz-feedback @(IsCorrect(index) ? "is-correct" : "is-wrong")"
+                       role="status"
+                       aria-live="polite">
                         <strong>@(IsCorrect(index) ? "Correcto." : "No es la opción correcta.")</strong>
                         @question.Explanation
                     </p>
@@ -50,7 +52,7 @@
                 <button class="button button-primary" type="button" @onclick="Check" disabled="@(!AllAnswered)">
                     Comprobar respuestas
                 </button>
-                <span class="quiz-hint">@AnsweredCount de @Questions.Count respondidas</span>
+                <span class="quiz-hint" aria-live="polite">@AnsweredCount de @Questions.Count respondidas</span>
             }
             else
             {

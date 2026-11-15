@@ -1,0 +1,56 @@
+@page "/buscar"
+@inject ContentCatalog Catalog
+
+<PageTitle>Buscar — Ruta .NET</PageTitle>
+<SeoHead Title="Buscar — Ruta .NET"
+         Description="Buscá lecciones de .NET por tema, concepto o título en Ruta .NET."
+         NoIndex="true" />
+
+<header class="page-header">
+    <span class="eyebrow">Buscar</span>
+    <h1>¿Qué querés aprender?</h1>
+    <p>Buscá por tema, concepto o nombre de lección.</p>
+    <form class="search-form" method="get" action="/buscar" role="search">
+        <input type="search" name="q" value="@Q" placeholder="Ej.: async, interfaces, EF Core..." aria-label="Buscar en el contenido" />
+        <button class="button button-primary" type="submit">Buscar</button>
+    </form>
+</header>
+
+@if (string.IsNullOrWhiteSpace(Q))
+{
+    <div class="empty-state">
+        <h2>Empezá con una palabra</h2>
+        <p>Probá con "variables", "interfaces", "async" o "JWT".</p>
+    </div>
+}
+else if (Results.Count == 0)
+{
+    <div class="empty-state">
+        <h2>No encontramos resultados</h2>
+        <p>Probá con otra palabra o revisá los módulos disponibles.</p>
+        <a class="button button-primary" href="/modulos">Ver módulos</a>
+    </div>
+}
+else
+{
+    <p class="search-summary">@Results.Count resultados para <strong>@Q</strong></p>
+    <ul class="search-results">
+        @foreach (var result in Results)
+        {
+            <li>
+                <a href="@result.Lesson.Url">
+                    <h2>@result.Lesson.Title</h2>
+                    <p>@result.Snippet</p>
+                    <span>@result.Lesson.ModuleTitle</span>
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    [SupplyParameterFromQuery(Name = "q")]
+    public string? Q { get; set; }
+
+    private IReadOnlyList<SearchResult> Results => Catalog.Search(Q);
+}

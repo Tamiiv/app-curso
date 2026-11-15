@@ -1,0 +1,20 @@
+{
+    "slug":  "csharp-desde-cero",
+    "title":  "C# desde cero",
+    "order":  2,
+    "level":  "Principiante",
+    "summary":  "Variables, tipos, condicionales, bucles, métodos y nulos.",
+    "status":  "published",
+    "topics":  [
+                   "Variables y tipos",
+                   "Operadores y expresiones",
+                   "Strings",
+                   "Condicionales",
+                   "Bucles",
+                   "Arrays y listas",
+                   "Métodos",
+                   "Nullable reference types",
+                   "Entrada y salida por consola",
+                   "Ejercicio integrador"
+               ]
+}

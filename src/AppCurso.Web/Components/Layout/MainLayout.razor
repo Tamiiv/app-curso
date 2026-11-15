@@ -1,0 +1,93 @@
+﻿@inherits LayoutComponentBase
+@inject ContentCatalog Catalog
+
+<a class="skip-link" href="#main-content">Saltar al contenido</a>
+
+<div class="app-shell">
+    <header class="topbar">
+        <button id="menu-toggle" class="icon-button menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+        </button>
+
+        <a class="brand" href="/" aria-label="Ruta .NET, inicio">
+            <span class="brand-mark">.NET</span>
+            <span class="brand-text">Ruta <strong>.NET</strong></span>
+        </a>
+
+        <nav class="topnav" aria-label="Navegación principal">
+            <a href="/modulos">Módulos</a>
+            <a href="/buscar">Buscar</a>
+        </nav>
+
+        <div class="topbar-actions">
+            <button id="theme-toggle" class="icon-button" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+                <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+                </svg>
+                <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+                </svg>
+            </button>
+            <AuthorizeView>
+                <Authorized>
+                    <a class="button button-ghost" href="/cuenta/perfil">Mi progreso</a>
+                    <form action="/cuenta/salir" method="post" class="inline-form">
+                        <AntiforgeryToken />
+                        <input type="hidden" name="returnUrl" value="/" />
+                        <button class="button button-ghost" type="submit">Salir</button>
+                    </form>
+                </Authorized>
+                <NotAuthorized>
+                    <a class="button button-ghost" href="/cuenta/ingresar">Ingresar</a>
+                    <a class="button button-primary" href="/cuenta/registro">Crear cuenta</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside id="sidebar" class="sidebar" aria-label="Módulos">
+            <div class="sidebar-inner">
+                <p class="sidebar-label">Ruta de aprendizaje</p>
+                <nav class="module-nav">
+                    @foreach (var module in Catalog.Modules)
+                    {
+                        <NavLink class="module-link" href="@($"/modulos/{module.Slug}")" Match="NavLinkMatch.Prefix">
+                            <span class="module-number">@module.Order.ToString("00")</span>
+                            <span class="module-name">@module.Title</span>
+                            @if (!module.IsPublished)
+                            {
+                                <span class="badge badge-soon">Pronto</span>
+                            }
+                        </NavLink>
+                    }
+                </nav>
+
+                <div class="sidebar-note">
+                    <span class="badge badge-free">100% gratis</span>
+                    <p>Sin paywall. Sin publicidad. Hecho para aprender.</p>
+                </div>
+            </div>
+        </aside>
+
+        <main id="main-content" class="content">
+            @Body
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>Ruta .NET — Aprender .NET en español.</p>
+            <p>Contenido en construcción. V1 en desarrollo.</p>
+        </div>
+    </footer>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    Ocurrió un error inesperado.
+    <a href="." class="reload">Recargar</a>
+    <span class="dismiss">🗙</span>
+</div>

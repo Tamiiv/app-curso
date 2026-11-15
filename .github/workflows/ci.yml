@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build, test y formato
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restaurar
+        run: dotnet restore AppCurso.slnx
+
+      - name: Compilar
+        run: dotnet build AppCurso.slnx --no-restore --configuration Release
+
+      - name: Tests
+        run: dotnet test AppCurso.slnx --no-build --configuration Release
+
+      - name: Verificar formato
+        run: dotnet format AppCurso.slnx --verify-no-changes --no-restore

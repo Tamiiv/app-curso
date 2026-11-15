@@ -1,0 +1,115 @@
+﻿@page "/modulos/{ModuleSlug}"
+@using System.Text.Json
+@inject ContentCatalog Catalog
+@inject NavigationManager Navigation
+
+@if (CurrentModule is null)
+{
+    <PageTitle>Módulo no encontrado — Ruta .NET</PageTitle>
+    <section class="empty-state">
+        <span class="eyebrow">404</span>
+        <h1>No encontramos ese módulo</h1>
+        <p>Puede que el enlace esté mal o que el módulo todavía no exista.</p>
+        <a class="button button-primary" href="/modulos">Ver todos los módulos</a>
+    </section>
+}
+else
+{
+    <PageTitle>@CurrentModule.Title — Ruta .NET</PageTitle>
+    <SeoHead Title="@($"{CurrentModule.Title} — Ruta .NET")"
+             Description="@CurrentModule.Summary"
+             Type="article"
+             JsonLd="@ModuleJsonLd" />
+
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="/modulos">Módulos</a>
+        <span aria-hidden="true">/</span>
+        <span>@CurrentModule.Title</span>
+    </nav>
+
+    <header class="page-header">
+        <div class="lesson-meta">
+            @if (CurrentModule.IsPublished)
+            {
+                <span class="badge badge-published">Publicado</span>
+            }
+            else
+            {
+                <span class="badge badge-soon">En preparación</span>
+            }
+            <span>Módulo @CurrentModule.Order.ToString("00")</span>
+            <span>@CurrentModule.Level</span>
+            <span>@(CurrentModule.IsPublished ? $"{CurrentModule.LessonCount} lecciones · {CurrentModule.TotalMinutes} min" : "Contenido pendiente")</span>
+        </div>
+        <h1>@CurrentModule.Title</h1>
+        <p>@CurrentModule.Summary</p>
+    </header>
+
+    @if (CurrentModule.IsPublished && CurrentModule.HasLessons)
+    {
+        <ol class="lesson-list">
+            @foreach (var lesson in CurrentModule.Lessons)
+            {
+                <li>
+                    <a class="lesson-row" href="@lesson.Url">
+                        <span class="lesson-row-number">@lesson.Order.ToString("00")</span>
+                        <span class="lesson-row-body">
+                            <strong>@lesson.Title</strong>
+                            <span>@lesson.Summary</span>
+                        </span>
+                        <span class="lesson-row-time">@lesson.EstimatedMinutes min</span>
+                    </a>
+                </li>
+            }
+        </ol>
+    }
+    else
+    {
+        <section class="empty-state">
+            <span class="eyebrow">En preparación</span>
+            <h2>Este módulo todavía se está escribiendo</h2>
+            <p>Mientras tanto, podés ver los temas que va a cubrir.</p>
+            <ul class="topic-list">
+                @foreach (var topic in CurrentModule.Topics)
+                {
+                    <li>@topic</li>
+                }
+            </ul>
+            <a class="button button-primary" href="/modulos">Ver módulos disponibles</a>
+        </section>
+    }
+}
+
+@code {
+    [Parameter]
+    public string ModuleSlug { get; set; } = string.Empty;
+
+    private ContentModule? CurrentModule => Catalog.GetModule(ModuleSlug);
+
+    private string ModuleJsonLd => CurrentModule is null
+        ? string.Empty
+        : JsonSerializer.Serialize(new
+        {
+            @context = "https://schema.org",
+            @type = "Course",
+            name = CurrentModule.Title,
+            description = CurrentModule.Summary,
+            url = Navigation.ToAbsoluteUri($"/modulos/{CurrentModule.Slug}").ToString(),
+            inLanguage = "es",
+            educationalLevel = CurrentModule.Level,
+            numberOfLessons = CurrentModule.LessonCount,
+            provider = new
+            {
+                @type = "Organization",
+                name = "Ruta .NET"
+            }
+        });
+
+    protected override void OnInitialized()
+    {
+        if (CurrentModule is null)
+        {
+            Navigation.NotFound();
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "slug":  "aspnet-core-apis",
+    "title":  "ASP.NET Core: APIs REST",
+    "order":  6,
+    "level":  "Intermedio",
+    "summary":  "Minimal APIs, routing, DI, middleware y validación.",
+    "status":  "planned",
+    "topics":  [
+                   "Minimal APIs",
+                   "Routing",
+                   "Inyección de dependencias",
+                   "Middleware",
+                   "Validación",
+                   "OpenAPI"
+               ]
+}

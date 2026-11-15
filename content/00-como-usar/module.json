@@ -1,0 +1,13 @@
+{
+    "slug":  "como-usar",
+    "title":  "Cómo usar la plataforma",
+    "order":  0,
+    "level":  "Introducción",
+    "summary":  "Conocé cómo está organizado el contenido y prepará tu entorno para practicar.",
+    "status":  "published",
+    "topics":  [
+                   "Cómo está organizado el contenido",
+                   "Progreso, marcadores y ruta sugerida",
+                   "Cómo practicar"
+               ]
+}

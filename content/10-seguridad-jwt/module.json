@@ -1,0 +1,16 @@
+{
+    "slug":  "seguridad-jwt",
+    "title":  "Seguridad y JWT",
+    "order":  10,
+    "level":  "Intermedio",
+    "summary":  "Autenticación, autorización, JWT, OAuth y OWASP.",
+    "status":  "planned",
+    "topics":  [
+                   "Autenticación vs autorización",
+                   "Hash de contraseñas",
+                   "JWT",
+                   "Refresh tokens",
+                   "OAuth/OIDC",
+                   "OWASP"
+               ]
+}

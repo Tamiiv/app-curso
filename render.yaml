@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: ruta-dotnet
+    runtime: docker
+    plan: free
+    region: ohio
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+        value: "true"
+      - key: DATABASE_URL
+        sync: false
+      - key: Database__MigrateOnStartup
+        value: "true"

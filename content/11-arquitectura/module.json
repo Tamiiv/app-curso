@@ -1,0 +1,16 @@
+{
+    "slug":  "arquitectura",
+    "title":  "Arquitectura de aplicaciones",
+    "order":  11,
+    "level":  "Avanzado",
+    "summary":  "Capas, arquitectura limpia, monolito modular y microservicios.",
+    "status":  "planned",
+    "topics":  [
+                   "Capas",
+                   "Arquitectura limpia",
+                   "Hexagonal",
+                   "Monolito modular",
+                   "Microservicios",
+                   "CQRS"
+               ]
+}

@@ -1,0 +1,172 @@
+@page "/cuenta/perfil"
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<AppUser> UserManager
+@inject ProgressService Progress
+@inject BookmarkService Bookmarks
+@inject ContentCatalog Catalog
+@inject IdentityRedirectManager RedirectManager
+
+<PageTitle>Mi progreso — Ruta .NET</PageTitle>
+
+@if (user is null || snapshot is null)
+{
+    <p class="loading-note">Cargando tu progreso...</p>
+}
+else
+{
+    <header class="page-header profile-header">
+        <div>
+            <span class="eyebrow">Tu cuenta</span>
+            <h1>Hola, @(string.IsNullOrWhiteSpace(user.DisplayName) ? user.Email : user.DisplayName)</h1>
+            <p>Este es tu avance en la ruta. Podés retomar en cualquier momento.</p>
+        </div>
+        <form action="/cuenta/salir" method="post" class="profile-logout">
+            <AntiforgeryToken />
+            <input type="hidden" name="returnUrl" value="/" />
+            <button class="button button-ghost" type="submit">Cerrar sesión</button>
+        </form>
+    </header>
+
+    <section class="progress-summary" aria-label="Progreso general">
+        <div class="progress-summary-main">
+            <span class="progress-percent">@snapshot.Percent%</span>
+            <div>
+                <h2>@snapshot.CompletedLessons de @snapshot.TotalLessons lecciones completadas</h2>
+                <p>Tu avance se guarda automáticamente. No hace falta terminar todo de una vez.</p>
+            </div>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@snapshot.Percent" aria-label="Progreso general">
+            <div class="progress-fill" style="width:@(snapshot.Percent)%"></div>
+        </div>
+        @if (continueLesson is not null)
+        {
+            <div class="continue-card">
+                <div>
+                    <span class="eyebrow">Continuar donde quedé</span>
+                    <strong>@continueLesson.Title</strong>
+                    <span>@continueLesson.ModuleTitle · @continueLesson.EstimatedMinutes min</span>
+                </div>
+                <a class="button button-primary" href="@continueLesson.Url">Seguir leyendo</a>
+            </div>
+        }
+    </section>
+
+    <section class="section">
+        <div class="section-heading">
+            <span class="eyebrow">Por módulo</span>
+            <h2>Tu avance en la ruta</h2>
+        </div>
+
+        <ul class="progress-module-list">
+            @foreach (var module in snapshot.Modules.Where(module => module.TotalLessons > 0))
+            {
+                <li>
+                    <a class="progress-module" href="@($"/modulos/{module.Module.Slug}")">
+                        <span class="module-number">@module.Module.Order.ToString("00")</span>
+                        <span class="progress-module-body">
+                            <span class="progress-module-top">
+                                <strong>@module.Module.Title</strong>
+                                <span>@module.CompletedLessons / @module.TotalLessons</span>
+                            </span>
+                            <span class="progress-track progress-track-small">
+                                <span class="progress-fill" style="width:@(module.Percent)%"></span>
+                            </span>
+                        </span>
+                        @if (module.IsComplete)
+                        {
+                            <span class="badge badge-published">Completo</span>
+                        }
+                    </a>
+                </li>
+            }
+        </ul>
+    </section>
+
+    <section class="section">
+        <div class="section-heading">
+            <span class="eyebrow">Guardados</span>
+            <h2>Tus marcadores</h2>
+            <p>Las lecciones que guardaste para volver más tarde.</p>
+        </div>
+
+        @if (bookmarkedLessons.Count == 0)
+        {
+            <div class="empty-state empty-state-compact">
+                <p>Todavía no guardaste ninguna lección. Usá el botón "Guardar" dentro de cada lección.</p>
+                <a class="button button-primary" href="/modulos">Explorar módulos</a>
+            </div>
+        }
+        else
+        {
+            <ul class="search-results">
+                @foreach (var lesson in bookmarkedLessons)
+                {
+                    <li>
+                        <a href="@lesson.Url">
+                            <h3>@lesson.Title</h3>
+                            <p>@lesson.Summary</p>
+                            <span>@lesson.ModuleTitle · @lesson.EstimatedMinutes min</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    </section>
+
+    <section class="section section-soft">
+        <div class="account-facts">
+            <div>
+                <span class="eyebrow">Cuenta</span>
+                <h2>Datos de tu cuenta</h2>
+                <dl>
+                    <div>
+                        <dt>Email</dt>
+                        <dd>@user.Email</dd>
+                    </div>
+                    <div>
+                        <dt>Nombre</dt>
+                        <dd>@(string.IsNullOrWhiteSpace(user.DisplayName) ? "Sin nombre" : user.DisplayName)</dd>
+                    </div>
+                    <div>
+                        <dt>Miembro desde</dt>
+                        <dd>@user.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy")</dd>
+                    </div>
+                </dl>
+            </div>
+            <div>
+                <span class="eyebrow">Privacidad</span>
+                <h2>Qué guardamos</h2>
+                <p>Solo tu email, tu nombre (si lo cargaste), tu progreso y tus marcadores. No usamos tus datos para publicidad ni los compartimos con terceros.</p>
+            </div>
+        </div>
+    </section>
+}
+
+@code {
+    private AppUser? user;
+    private ProgressSnapshot? snapshot;
+    private ContentLesson? continueLesson;
+    private IReadOnlyList<ContentLesson> bookmarkedLessons = [];
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await UserManager.GetUserAsync(HttpContext.User);
+
+        if (user is null)
+        {
+            RedirectManager.RedirectToInvalidUser(UserManager, HttpContext);
+            return;
+        }
+
+        snapshot = await Progress.GetSnapshotAsync(user.Id);
+        continueLesson = await Progress.GetContinueLessonAsync(user.Id);
+        bookmarkedLessons = await Bookmarks.GetBookmarkedLessonsAsync(user.Id);
+    }
+}

@@ -1,0 +1,21 @@
+@if (Headings.Count > 0)
+{
+    <aside class="lesson-toc" aria-label="En esta lección">
+        <p class="sidebar-label">En esta lección</p>
+        <nav>
+            <ul>
+                @foreach (var heading in Headings)
+                {
+                    <li class="@(heading.Level == 3 ? "toc-sub" : null)">
+                        <a href="#@heading.Id">@heading.Text</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </aside>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IReadOnlyList<LessonHeading> Headings { get; set; } = [];
+}

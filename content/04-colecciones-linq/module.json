@@ -1,0 +1,19 @@
+{
+    "slug": "colecciones-linq",
+    "title": "Colecciones, LINQ y genéricos",
+    "order": 4,
+    "level": "Principiante",
+    "summary": "Listas, diccionarios, genéricos y consultas con LINQ.",
+    "status": "published",
+    "topics": [
+        "List, Dictionary y HashSet",
+        "IEnumerable e iteradores",
+        "Genéricos",
+        "Lambdas y delegates",
+        "LINQ: Where, Select y OrderBy",
+        "LINQ: GroupBy, Join y Aggregate",
+        "Ejecución diferida",
+        "Colecciones inmutables",
+        "Ejercicio integrador"
+    ]
+}

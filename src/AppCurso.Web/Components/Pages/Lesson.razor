@@ -1,0 +1,121 @@
+﻿@page "/modulos/{ModuleSlug}/{LessonSlug}"
+@using System.Text.Json
+@inject ContentCatalog Catalog
+@inject NavigationManager Navigation
+
+@if (CurrentLesson is null || CurrentModule is null)
+{
+    <PageTitle>Lección no encontrada — Ruta .NET</PageTitle>
+    <section class="empty-state">
+        <span class="eyebrow">404</span>
+        <h1>No encontramos esa lección</h1>
+        <p>Puede que el enlace esté mal o que la lección todavía no esté publicada.</p>
+        <a class="button button-primary" href="/modulos">Ver todos los módulos</a>
+    </section>
+}
+else
+{
+    <PageTitle>@CurrentLesson.Title — Ruta .NET</PageTitle>
+    <SeoHead Title="@($"{CurrentLesson.Title} — Ruta .NET")"
+             Description="@CurrentLesson.Summary"
+             Type="article"
+             JsonLd="@LessonJsonLd" />
+
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="/modulos">Módulos</a>
+        <span aria-hidden="true">/</span>
+        <a href="@($"/modulos/{CurrentModule.Slug}")">@CurrentModule.Title</a>
+        <span aria-hidden="true">/</span>
+        <span>@CurrentLesson.Title</span>
+    </nav>
+
+    <div class="lesson-layout">
+        <article class="lesson-article">
+            <header class="lesson-header">
+                <div class="lesson-meta">
+                    <span class="badge badge-published">@CurrentModule.Level</span>
+                    <span>@CurrentLesson.EstimatedMinutes min de lectura</span>
+                    <span>Módulo @CurrentModule.Order.ToString("00")</span>
+                </div>
+                <h1>@CurrentLesson.Title</h1>
+                <p class="lead">@CurrentLesson.Summary</p>
+            </header>
+
+            <div class="lesson-body">
+                @((MarkupString)CurrentLesson.Html)
+            </div>
+        </article>
+
+        <LessonToc Headings="CurrentLesson.Headings" />
+    </div>
+
+    <LessonActions ModuleSlug="@ModuleSlug" LessonSlug="@LessonSlug" />
+
+    @if (CurrentLesson.HasQuiz)
+    {
+        <Quiz Questions="CurrentLesson.Quiz" />
+    }
+
+    <nav class="lesson-nav" aria-label="Navegación entre lecciones">
+        @if (Previous is not null)
+        {
+            <a class="previous" href="@Previous.Url">
+                <span>← Anterior</span>
+                <strong>@Previous.Title</strong>
+            </a>
+        }
+        else
+        {
+            <span></span>
+        }
+
+        @if (Next is not null)
+        {
+            <a class="next" href="@Next.Url">
+                <span>Siguiente →</span>
+                <strong>@Next.Title</strong>
+            </a>
+        }
+    </nav>
+}
+
+@code {
+    [Parameter]
+    public string ModuleSlug { get; set; } = string.Empty;
+
+    [Parameter]
+    public string LessonSlug { get; set; } = string.Empty;
+
+    private ContentModule? CurrentModule => Catalog.GetModule(ModuleSlug);
+    private ContentLesson? CurrentLesson => Catalog.GetLesson(ModuleSlug, LessonSlug);
+    private ContentLesson? Previous => CurrentLesson is null ? null : Catalog.GetAdjacentLessons(ModuleSlug, LessonSlug).Previous;
+    private ContentLesson? Next => CurrentLesson is null ? null : Catalog.GetAdjacentLessons(ModuleSlug, LessonSlug).Next;
+
+    private string LessonJsonLd => CurrentLesson is null
+        ? string.Empty
+        : JsonSerializer.Serialize(new
+        {
+            @context = "https://schema.org",
+            @type = "LearningResource",
+            name = CurrentLesson.Title,
+            description = CurrentLesson.Summary,
+            url = Navigation.ToAbsoluteUri(CurrentLesson.Url).ToString(),
+            learningResourceType = "Lesson",
+            inLanguage = "es",
+            educationalLevel = CurrentModule?.Level,
+            isPartOf = new
+            {
+                @type = "Course",
+                name = "Ruta .NET",
+                url = Navigation.ToAbsoluteUri("/modulos").ToString()
+            }
+        });
+
+    protected override void OnInitialized()
+    {
+        if (CurrentLesson is null || CurrentModule is null)
+        {
+            Navigation.NotFound();
+        }
+    }
+}

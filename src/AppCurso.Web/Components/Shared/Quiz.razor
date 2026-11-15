@@ -1,0 +1,134 @@
+@rendermode InteractiveServer
+
+@if (Questions.Count > 0)
+{
+    <section class="quiz" aria-labelledby="quiz-title">
+        <header class="quiz-header">
+            <span class="eyebrow">Quiz</span>
+            <h2 id="quiz-title">Comprobá lo que aprendiste</h2>
+            <p>Elegí una opción por pregunta y después revisá las respuestas.</p>
+        </header>
+
+        @for (var questionIndex = 0; questionIndex < Questions.Count; questionIndex++)
+        {
+            var index = questionIndex;
+            var question = Questions[index];
+
+            <fieldset class="quiz-question">
+                <legend>
+                    <span class="quiz-number">@(index + 1)</span>
+                    @question.Question
+                </legend>
+
+                <div class="quiz-options">
+                    @for (var optionIndex = 0; optionIndex < question.Options.Count; optionIndex++)
+                    {
+                        var option = optionIndex;
+                        <button type="button"
+                                class="quiz-option @GetOptionClass(index, option)"
+                                @onclick="() => Select(index, option)"
+                                aria-pressed="@(selected[index] == option)">
+                            <span class="quiz-option-letter">@GetLetter(option)</span>
+                            <span>@question.Options[option]</span>
+                        </button>
+                    }
+                </div>
+
+                @if (submitted)
+                {
+                    <p class="quiz-feedback @(IsCorrect(index) ? "is-correct" : "is-wrong")">
+                        <strong>@(IsCorrect(index) ? "Correcto." : "No es la opción correcta.")</strong>
+                        @question.Explanation
+                    </p>
+                }
+            </fieldset>
+        }
+
+        <div class="quiz-actions">
+            @if (!submitted)
+            {
+                <button class="button button-primary" type="button" @onclick="Check" disabled="@(!AllAnswered)">
+                    Comprobar respuestas
+                </button>
+                <span class="quiz-hint">@AnsweredCount de @Questions.Count respondidas</span>
+            }
+            else
+            {
+                <span class="quiz-score" role="status">
+                    <strong>@Score de @Questions.Count</strong> correctas
+                </span>
+                <button class="button button-ghost" type="button" @onclick="Reset">Intentar de nuevo</button>
+            }
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IReadOnlyList<QuizQuestion> Questions { get; set; } = [];
+
+    private int[] selected = [];
+    private bool submitted;
+
+    private int AnsweredCount => selected.Count(answer => answer >= 0);
+    private bool AllAnswered => selected.All(answer => answer >= 0);
+    private int Score => Questions
+        .Select((question, index) => question.Answer == selected[index])
+        .Count(correct => correct);
+
+    protected override void OnParametersSet()
+    {
+        if (selected.Length != Questions.Count)
+        {
+            Array.Resize(ref selected, Questions.Count);
+            Array.Fill(selected, -1);
+            submitted = false;
+        }
+    }
+
+    private void Select(int questionIndex, int optionIndex)
+    {
+        if (submitted)
+        {
+            return;
+        }
+
+        selected[questionIndex] = optionIndex;
+    }
+
+    private void Check() => submitted = true;
+
+    private void Reset()
+    {
+        Array.Fill(selected, -1);
+        submitted = false;
+    }
+
+    private bool IsCorrect(int questionIndex) =>
+        selected[questionIndex] == Questions[questionIndex].Answer;
+
+    private string GetOptionClass(int questionIndex, int optionIndex)
+    {
+        if (selected[questionIndex] == optionIndex)
+        {
+            if (!submitted)
+            {
+                return "is-selected";
+            }
+
+            return IsCorrect(questionIndex) ? "is-correct" : "is-wrong";
+        }
+
+        return submitted && Questions[questionIndex].Answer == optionIndex ? "is-correct" : string.Empty;
+    }
+
+    private static string GetLetter(int optionIndex) => optionIndex switch
+    {
+        0 => "A",
+        1 => "B",
+        2 => "C",
+        3 => "D",
+        4 => "E",
+        _ => "•"
+    };
+}

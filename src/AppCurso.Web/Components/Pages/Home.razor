@@ -1,0 +1,136 @@
+﻿@page "/"
+@using System.Text.Json
+@inject ContentCatalog Catalog
+@inject NavigationManager Navigation
+
+<PageTitle>Ruta .NET — Aprender .NET de cero a profesional</PageTitle>
+<SeoHead Title="Ruta .NET — Aprender .NET de cero a profesional"
+         Description="Aprendé .NET de cero a nivel profesional, en español y gratis. Una ruta clara con ejemplos, ejercicios y progreso."
+         JsonLd="@HomeJsonLd" />
+
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow">Aprende .NET en español</span>
+        <h1>De cero a profesional, sin perderte en el camino.</h1>
+        <p class="lead">
+            Una ruta clara para aprender C# y .NET con lo que realmente se usa en el trabajo:
+            APIs, bases de datos, testing, código limpio, seguridad y despliegue.
+        </p>
+        <div class="hero-actions">
+            <a class="button button-primary" href="/modulos/fundamentos/que-es-dotnet">Empezar ahora</a>
+            <a class="button button-ghost" href="/modulos">Ver el temario</a>
+        </div>
+        <ul class="hero-points">
+            <li>12 módulos, de cero a experto</li>
+            <li>Ejemplos y ejercicios prácticos</li>
+            <li>Gratis y sin publicidad</li>
+        </ul>
+    </div>
+
+    <div class="hero-card" aria-hidden="true">
+        <div class="code-window">
+            <div class="code-window-bar"><span></span><span></span><span></span></div>
+            <pre><code><span class="code-keyword">var</span> ruta = <span class="code-keyword">new</span> <span class="code-type">Ruta</span>();
+ruta.<span class="code-method">Empezar</span>(<span class="code-string">"desde cero"</span>);
+ruta.<span class="code-method">Aprender</span>(<span class="code-string">"C#"</span>);
+ruta.<span class="code-method">Llegar</span>(<span class="code-string">"a profesional"</span>);</code></pre>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <span class="eyebrow">La ruta</span>
+        <h2>Un camino, no una lista de temas</h2>
+        <p>Cada módulo se apoya en el anterior. Podés navegar libremente, pero la ruta sugerida te lleva de la base a un proyecto real.</p>
+    </div>
+
+    <div class="module-grid">
+        @foreach (var module in Catalog.Modules.Where(module => module.Order > 0).Take(4))
+        {
+            <a class="module-card" href="@($"/modulos/{module.Slug}")">
+                <div class="module-card-top">
+                    <span class="module-number">@module.Order.ToString("00")</span>
+                    @if (module.IsPublished)
+                    {
+                        <span class="badge badge-published">Publicado</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-soon">Pronto</span>
+                    }
+                </div>
+                <h3>@module.Title</h3>
+                <p>@module.Summary</p>
+                <div class="module-card-meta">
+                    <span>@module.Level</span>
+                    <span>@(module.IsPublished ? $"{module.LessonCount} lecciones" : "En preparación")</span>
+                </div>
+            </a>
+        }
+    </div>
+
+    <p class="section-link"><a class="text-link" href="/modulos">Ver los 12 módulos →</a></p>
+</section>
+
+<section class="section section-soft">
+    <div class="section-heading">
+        <span class="eyebrow">Por qué esta plataforma</span>
+        <h2>Menos ruido, más práctica</h2>
+        <p>No hace falta elegir entre veinte tutoriales. Acá tenés una ruta curada, en español y enfocada en el trabajo real.</p>
+    </div>
+
+    <div class="feature-grid">
+        <article class="feature">
+            <div class="feature-icon">01</div>
+            <h3>De cero a lo laboral</h3>
+            <p>Empezás por la sintaxis y llegás a APIs, EF Core, testing, seguridad y deploy.</p>
+        </article>
+        <article class="feature">
+            <div class="feature-icon">02</div>
+            <h3>Explicado en español</h3>
+            <p>Conceptos claros, sin traducciones raras ni suposiciones sobre lo que ya sabés.</p>
+        </article>
+        <article class="feature">
+            <div class="feature-icon">03</div>
+            <h3>Práctica de verdad</h3>
+            <p>Ejemplos que compilan, ejercicios con solución y quizzes para comprobar que entendiste.</p>
+        </article>
+        <article class="feature">
+            <div class="feature-icon">04</div>
+            <h3>Tu progreso, guardado</h3>
+            <p>Marcá lecciones, guardá marcadores y continuá donde dejaste, desde cualquier dispositivo.</p>
+        </article>
+    </div>
+</section>
+
+<section class="section">
+    <div class="cta-panel">
+        <span class="eyebrow eyebrow-light">Empezá hoy</span>
+        <h2>Tu primer proyecto .NET te está esperando.</h2>
+        <p>No necesitás experiencia previa. Solo ganas de aprender y una computadora.</p>
+        <a class="button button-primary" href="/modulos/fundamentos/que-es-dotnet">Empezar por Fundamentos</a>
+    </div>
+</section>
+
+@code {
+    private string HomeJsonLd => JsonSerializer.Serialize(new
+    {
+        @context = "https://schema.org",
+        @type = "WebSite",
+        name = "Ruta .NET",
+        url = Navigation.ToAbsoluteUri("/").ToString(),
+        inLanguage = "es",
+        description = "Aprendé .NET de cero a nivel profesional, en español y gratis.",
+        potentialAction = new
+        {
+            @type = "SearchAction",
+            target = new
+            {
+                @type = "EntryPoint",
+                urlTemplate = Navigation.ToAbsoluteUri("/buscar?q={search_term_string}").ToString()
+            },
+            query_input = "required name=search_term_string"
+        }
+    });
+}

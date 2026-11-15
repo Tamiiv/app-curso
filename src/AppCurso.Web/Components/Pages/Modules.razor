@@ -1,0 +1,37 @@
+@page "/modulos"
+@inject ContentCatalog Catalog
+
+<PageTitle>Módulos — Ruta .NET</PageTitle>
+<SeoHead Title="Módulos — Ruta .NET"
+         Description="Los 12 módulos de Ruta .NET: desde fundamentos y C# hasta APIs, seguridad, arquitectura y deploy." />
+
+<header class="page-header">
+    <span class="eyebrow">Temario</span>
+    <h1>Los 12 módulos</h1>
+    <p>Una ruta completa para aprender .NET de cero a nivel profesional. Los primeros módulos ya tienen contenido; el resto se va publicando por etapas.</p>
+</header>
+
+<div class="module-list">
+    @foreach (var module in Catalog.Modules)
+    {
+        <a class="module-row" href="@($"/modulos/{module.Slug}")">
+            <span class="module-row-number">@module.Order.ToString("00")</span>
+            <span class="module-row-body">
+                <h2>@module.Title</h2>
+                <p>@module.Summary</p>
+            </span>
+            <span class="module-row-meta">
+                @if (module.IsPublished)
+                {
+                    <span class="badge badge-published">Publicado</span>
+                }
+                else
+                {
+                    <span class="badge badge-soon">Pronto</span>
+                }
+                <span>@module.Level</span>
+                <span>@(module.IsPublished ? $"{module.LessonCount} lecciones" : "En preparación")</span>
+            </span>
+        </a>
+    }
+</div>

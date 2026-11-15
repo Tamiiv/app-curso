@@ -1,0 +1,109 @@
+@rendermode InteractiveServer
+
+@inject CurrentUser CurrentUser
+@inject ProgressService Progress
+@inject BookmarkService Bookmarks
+@inject NavigationManager Navigation
+
+<div class="lesson-actions">
+    @if (isLoading)
+    {
+        <span class="lesson-actions-note">Cargando tu progreso...</span>
+    }
+    else if (!isAuthenticated)
+    {
+        <a class="button button-primary" href="@LoginUrl">Ingresá para guardar tu progreso</a>
+        <span class="lesson-actions-note">Tu avance y tus marcadores se guardan en tu cuenta.</span>
+    }
+    else
+    {
+        <button class="button @(isCompleted ? "button-success" : "button-primary")"
+                type="button"
+                @onclick="ToggleCompleted"
+                disabled="@isSaving">
+            @(isCompleted ? "✓ Lección completada" : "Marcar como completada")
+        </button>
+        <button class="button button-ghost"
+                type="button"
+                @onclick="ToggleBookmark"
+                disabled="@isSaving"
+                aria-pressed="@isBookmarked">
+            @(isBookmarked ? "★ Guardada en marcadores" : "☆ Guardar para después")
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string ModuleSlug { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string LessonSlug { get; set; } = string.Empty;
+
+    private string? userId;
+    private bool isAuthenticated;
+    private bool isLoading = true;
+    private bool isSaving;
+    private bool isCompleted;
+    private bool isBookmarked;
+
+    private string LoginUrl =>
+        $"/cuenta/ingresar?returnUrl={Uri.EscapeDataString(Navigation.ToBaseRelativePath(Navigation.Uri))}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        userId = await CurrentUser.GetUserIdAsync();
+        isAuthenticated = userId is not null;
+
+        if (userId is null)
+        {
+            isLoading = false;
+            return;
+        }
+
+        var state = await Progress.GetLessonStateAsync(userId, ModuleSlug, LessonSlug);
+        isCompleted = state.IsCompleted;
+        isBookmarked = state.IsBookmarked;
+        isLoading = false;
+
+        await Progress.RecordViewAsync(userId, ModuleSlug, LessonSlug);
+    }
+
+    private async Task ToggleCompleted()
+    {
+        if (userId is null)
+        {
+            return;
+        }
+
+        isSaving = true;
+
+        try
+        {
+            isCompleted = await Progress.SetCompletedAsync(userId, ModuleSlug, LessonSlug, !isCompleted);
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task ToggleBookmark()
+    {
+        if (userId is null)
+        {
+            return;
+        }
+
+        isSaving = true;
+
+        try
+        {
+            isBookmarked = await Bookmarks.ToggleAsync(userId, ModuleSlug, LessonSlug);
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+}

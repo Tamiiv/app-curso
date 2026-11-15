@@ -1,0 +1,15 @@
+{
+    "slug":  "testing",
+    "title":  "Testing y calidad",
+    "order":  8,
+    "level":  "Intermedio",
+    "summary":  "xUnit, tests unitarios, integración y TDD.",
+    "status":  "planned",
+    "topics":  [
+                   "xUnit",
+                   "Unitarios vs integración",
+                   "Mocking",
+                   "TDD",
+                   "Cobertura"
+               ]
+}

@@ -1,0 +1,17 @@
+{
+    "slug":  "fundamentos",
+    "title":  "Fundamentos de .NET",
+    "order":  1,
+    "level":  "Principiante",
+    "summary":  "Qué es .NET, cómo instalarlo y cómo crear tu primer proyecto.",
+    "status":  "published",
+    "topics":  [
+                   "Qué es .NET",
+                   "Instalación y CLI",
+                   "Anatomía de un proyecto",
+                   "NuGet",
+                   "Debugging",
+                   "Git",
+                   "Publicación"
+               ]
+}

@@ -1,0 +1,111 @@
+@page "/cuenta/ingresar"
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject IdentityRedirectManager RedirectManager
+
+<PageTitle>Ingresar — Ruta .NET</PageTitle>
+
+<section class="auth-page">
+    <div class="auth-card">
+        <header class="auth-header">
+            <span class="eyebrow">Tu cuenta</span>
+            <h1>Ingresar</h1>
+            <p>Guardá tu progreso, tus marcadores y continuá donde dejaste.</p>
+        </header>
+
+        <StatusMessage />
+
+        @if (errorMessage is not null)
+        {
+            <div class="form-alert form-alert-error" role="alert">@errorMessage</div>
+        }
+
+        <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="form-alert form-alert-error" role="alert" />
+            <input type="hidden" name="ReturnUrlForm" value="@ReturnUrl" />
+
+            <div class="form-field">
+                <label for="login-email">Email</label>
+                <InputText @bind-Value="Input.Email" id="login-email" type="email" autocomplete="username" aria-required="true" />
+                <ValidationMessage For="() => Input.Email" />
+            </div>
+
+            <div class="form-field">
+                <label for="login-password">Contraseña</label>
+                <InputText @bind-Value="Input.Password" id="login-password" type="password" autocomplete="current-password" aria-required="true" />
+                <ValidationMessage For="() => Input.Password" />
+            </div>
+
+            <label class="checkbox-field">
+                <InputCheckbox @bind-Value="Input.RememberMe" />
+                <span>Mantener la sesión iniciada</span>
+            </label>
+
+            <button class="button button-primary button-block" type="submit">Ingresar</button>
+        </EditForm>
+
+        <div class="auth-links">
+            <a href="/cuenta/recuperar">Olvidé mi contraseña</a>
+            <a href="/cuenta/registro">Crear una cuenta</a>
+        </div>
+    </div>
+</section>
+
+@code {
+    private string? errorMessage;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private string? ReturnUrlForm { get; set; }
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Input ??= new InputModel();
+    }
+
+    private async Task LoginUser()
+    {
+        errorMessage = null;
+
+        var result = await SignInManager.PasswordSignInAsync(
+            Input.Email,
+            Input.Password,
+            Input.RememberMe,
+            lockoutOnFailure: true);
+
+        if (result.Succeeded)
+        {
+            RedirectManager.RedirectTo(string.IsNullOrWhiteSpace(ReturnUrlForm) ? "/cuenta/perfil" : ReturnUrlForm);
+            return;
+        }
+
+        errorMessage = result.IsLockedOut
+            ? "La cuenta está bloqueada temporalmente por demasiados intentos. Probá de nuevo en unos minutos."
+            : "Email o contraseña incorrectos.";
+    }
+
+    private sealed class InputModel
+    {
+        [Required(ErrorMessage = "Ingresá tu email.")]
+        [EmailAddress(ErrorMessage = "El email no es válido.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Ingresá tu contraseña.")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = string.Empty;
+
+        public bool RememberMe { get; set; } = true;
+    }
+}

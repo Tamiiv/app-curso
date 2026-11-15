@@ -1,0 +1,18 @@
+{
+    "slug":  "poo",
+    "title":  "Programación orientada a objetos",
+    "order":  3,
+    "level":  "Principiante",
+    "summary":  "Clases, interfaces, herencia, composición y polimorfismo.",
+    "status":  "published",
+    "topics":  [
+                   "Clases y objetos",
+                   "Constructores y propiedades",
+                   "Encapsulamiento",
+                   "Herencia",
+                   "Polimorfismo",
+                   "Interfaces",
+                   "Composición",
+                   "Records"
+               ]
+}

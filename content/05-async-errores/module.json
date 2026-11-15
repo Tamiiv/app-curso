@@ -1,0 +1,15 @@
+{
+    "slug":  "async-errores",
+    "title":  "Async/await y manejo de errores",
+    "order":  5,
+    "level":  "Intermedio",
+    "summary":  "Tareas, asincronía, excepciones y logging.",
+    "status":  "planned",
+    "topics":  [
+                   "Task",
+                   "async/await",
+                   "CancellationToken",
+                   "Excepciones",
+                   "Logging"
+               ]
+}

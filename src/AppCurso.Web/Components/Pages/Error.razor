@@ -1,0 +1,28 @@
+﻿@page "/Error"
+@using System.Diagnostics
+
+<PageTitle>Error — Ruta .NET</PageTitle>
+
+<section class="empty-state">
+    <span class="eyebrow">Error</span>
+    <h1>Algo salió mal</h1>
+    <p>Estamos revisando el problema. Podés volver al inicio e intentar de nuevo.</p>
+
+    @if (ShowRequestId)
+    {
+        <p class="error-id">ID del error: <code>@RequestId</code></p>
+    }
+
+    <a class="button button-primary" href="/">Volver al inicio</a>
+</section>
+
+@code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

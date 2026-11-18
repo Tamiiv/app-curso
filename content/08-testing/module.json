@@ -1,15 +1,19 @@
 {
-    "slug":  "testing",
-    "title":  "Testing y calidad",
-    "order":  8,
-    "level":  "Intermedio",
-    "summary":  "xUnit, tests unitarios, integración y TDD.",
-    "status":  "planned",
-    "topics":  [
-                   "xUnit",
-                   "Unitarios vs integración",
-                   "Mocking",
-                   "TDD",
-                   "Cobertura"
-               ]
+    "slug": "testing",
+    "title": "Testing y calidad",
+    "order": 8,
+    "level": "Intermedio",
+    "summary": "xUnit, tests unitarios, integración y TDD.",
+    "status": "published",
+    "topics": [
+        "xUnit: primeros pasos",
+        "Arrange, Act, Assert",
+        "Unitarios vs. integración",
+        "Mocks, stubs y fakes",
+        "TDD",
+        "WebApplicationFactory",
+        "Pruebas de APIs",
+        "Cobertura y calidad",
+        "Ejercicio integrador: suite de pruebas"
+    ]
 }

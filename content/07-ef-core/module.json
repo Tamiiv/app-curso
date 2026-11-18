@@ -1,16 +1,19 @@
 {
-    "slug":  "ef-core",
-    "title":  "EF Core y bases de datos",
-    "order":  7,
-    "level":  "Intermedio",
-    "summary":  "DbContext, relaciones, migrations y consultas eficientes.",
-    "status":  "planned",
-    "topics":  [
-                   "DbContext",
-                   "Entidades y relaciones",
-                   "Migrations",
-                   "Consultas",
-                   "Transacciones",
-                   "Rendimiento"
-               ]
+    "slug": "ef-core",
+    "title": "EF Core y bases de datos",
+    "order": 7,
+    "level": "Intermedio",
+    "summary": "DbContext, relaciones, migrations y consultas eficientes.",
+    "status": "published",
+    "topics": [
+        "DbContext y entidades",
+        "Configuración y mapeo",
+        "Relaciones entre entidades",
+        "Migraciones",
+        "Consultas con LINQ",
+        "Include y proyecciones",
+        "AsNoTracking y rendimiento",
+        "Transacciones y concurrencia",
+        "Ejercicio integrador"
+    ]
 }

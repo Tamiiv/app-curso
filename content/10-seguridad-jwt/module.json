@@ -1,16 +1,19 @@
 {
-    "slug":  "seguridad-jwt",
-    "title":  "Seguridad y JWT",
-    "order":  10,
-    "level":  "Intermedio",
-    "summary":  "Autenticación, autorización, JWT, OAuth y OWASP.",
-    "status":  "planned",
-    "topics":  [
-                   "Autenticación vs autorización",
-                   "Hash de contraseñas",
-                   "JWT",
-                   "Refresh tokens",
-                   "OAuth/OIDC",
-                   "OWASP"
-               ]
+    "slug": "seguridad-jwt",
+    "title": "Seguridad y JWT",
+    "order": 10,
+    "level": "Intermedio",
+    "summary": "Autenticación, autorización, JWT, OAuth y OWASP.",
+    "status": "published",
+    "topics": [
+        "Autenticación vs. autorización",
+        "Hash de contraseñas",
+        "JWT: estructura y validación",
+        "Refresh tokens",
+        "OAuth 2.0 y OpenID Connect",
+        "OWASP Top 10 en .NET",
+        "Secretos y configuración",
+        "HTTPS, CORS y CSRF",
+        "Ejercicio integrador: API segura"
+    ]
 }

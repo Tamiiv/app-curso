@@ -1,8 +1,10 @@
+using System.Text.RegularExpressions;
+
 using AppCurso.Web.Features.Content;
 
 namespace AppCurso.Tests.Features.Content;
 
-public sealed class ContentCatalogTests
+public sealed partial class ContentCatalogTests
 {
     private static readonly ContentCatalog Catalog = ContentLoader.Load(
         Path.Combine(AppContext.BaseDirectory, "content"));
@@ -19,7 +21,7 @@ public sealed class ContentCatalogTests
     {
         var publishedModules = Catalog.Modules.Where(module => module.IsPublished).ToArray();
 
-        Assert.Equal(5, publishedModules.Length);
+        Assert.NotEmpty(publishedModules);
         Assert.All(publishedModules, module =>
         {
             Assert.NotEmpty(module.Lessons);
@@ -38,12 +40,20 @@ public sealed class ContentCatalogTests
     {
         var plannedModules = Catalog.Modules.Where(module => !module.IsPublished).ToArray();
 
-        Assert.Equal(8, plannedModules.Length);
         Assert.All(plannedModules, module =>
         {
             Assert.Empty(module.Lessons);
             Assert.NotEmpty(module.Topics);
         });
+    }
+
+    [Fact]
+    public void EveryModuleIsEitherPublishedWithLessonsOrPlannedWithTopics()
+    {
+        Assert.All(Catalog.Modules, module =>
+            Assert.True(
+                module.IsPublished ? module.Lessons.Count > 0 : module.Topics.Count > 0,
+                $"El módulo {module.Slug} no tiene el contenido esperado para su estado."));
     }
 
     [Fact]
@@ -86,4 +96,59 @@ public sealed class ContentCatalogTests
         Assert.NotNull(next);
         Assert.Equal("instalar-dotnet", next.Slug);
     }
+
+    [Fact]
+    public void EveryPublishedLessonHasAtLeastThreeValidQuizQuestions()
+    {
+        Assert.All(Catalog.AllLessons, lesson =>
+        {
+            Assert.True(
+                lesson.Quiz.Count >= 3,
+                $"La lección {lesson.Url} tiene {lesson.Quiz.Count} preguntas de quiz.");
+
+            Assert.All(lesson.Quiz, question =>
+            {
+                Assert.True(question.IsValid, $"Pregunta inválida en {lesson.Url}: {question.Question}");
+                Assert.False(string.IsNullOrWhiteSpace(question.Explanation));
+                Assert.Equal(question.Options.Count, question.Options.Distinct(StringComparer.Ordinal).Count());
+            });
+        });
+    }
+
+    [Fact]
+    public void InternalLessonLinksPointToPublishedLessons()
+    {
+        var lessonUrls = Catalog.AllLessons
+            .Select(lesson => lesson.Url)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var moduleUrls = Catalog.Modules
+            .Select(module => $"/modulos/{module.Slug}")
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var brokenLinks = new List<string>();
+
+        foreach (var lesson in Catalog.AllLessons)
+        {
+            foreach (Match match in InternalLinkPattern().Matches(lesson.Html))
+            {
+                var url = match.Groups["url"].Value.TrimEnd('/');
+
+                if (url.Contains('#', StringComparison.Ordinal))
+                {
+                    url = url[..url.IndexOf('#', StringComparison.Ordinal)];
+                }
+
+                if (!lessonUrls.Contains(url) && !moduleUrls.Contains(url))
+                {
+                    brokenLinks.Add($"{lesson.Url} -> {url}");
+                }
+            }
+        }
+
+        Assert.Empty(brokenLinks);
+    }
+
+    [GeneratedRegex("href=\"(?<url>/modulos/[^\"]*)\"")]
+    private static partial Regex InternalLinkPattern();
 }

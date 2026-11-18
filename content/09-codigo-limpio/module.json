@@ -1,17 +1,19 @@
 {
-    "slug":  "codigo-limpio",
-    "title":  "Código limpio, SOLID y patrones",
-    "order":  9,
-    "level":  "Intermedio",
-    "summary":  "Buenas prácticas, principios SOLID y patrones de diseño.",
-    "status":  "planned",
-    "topics":  [
-                   "Nombres y funciones",
-                   "SOLID",
-                   "DRY, KISS y YAGNI",
-                   "Patrones creacionales",
-                   "Patrones estructurales",
-                   "Patrones de comportamiento",
-                   "Refactoring"
-               ]
+    "slug": "codigo-limpio",
+    "title": "Código limpio, SOLID y patrones",
+    "order": 9,
+    "level": "Intermedio",
+    "summary": "Nombres, SOLID, patrones y refactoring seguro.",
+    "status": "published",
+    "topics": [
+        "Nombres y funciones chicas",
+        "Comentarios, formato y legibilidad",
+        "DRY, KISS y YAGNI",
+        "SOLID: SRP y OCP",
+        "SOLID: LSP, ISP y DIP",
+        "Patrones creacionales",
+        "Patrones estructurales",
+        "Patrones de comportamiento",
+        "Refactoring y ejercicio integrador"
+    ]
 }

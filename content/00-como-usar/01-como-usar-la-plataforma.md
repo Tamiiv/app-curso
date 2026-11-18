@@ -54,7 +54,7 @@ No es obligatorio seguir el orden, pero si recién empezás, te conviene respeta
 - La **barra lateral** muestra todos los módulos. Podés entrar a cualquiera en cualquier momento.
 - Dentro de una lección, los botones **Anterior** y **Siguiente** te llevan por el orden del módulo.
 - El **buscador** encuentra lecciones por título, encabezado o contenido.
-- Los módulos marcados como **En preparación** todavía no tienen lecciones; podés ver su temario para saber qué viene.
+- Si un módulo aparece como **En preparación**, todavía no tiene lecciones; podés ver su temario para saber qué viene.
 
 ## Progreso y práctica
 

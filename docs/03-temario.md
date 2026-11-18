@@ -1,14 +1,14 @@
 # Temario
 
 **Proyecto:** Ruta .NET (nombre provisorio)  
-**Estado:** Fase 4 — Contenido (en curso)  
-**Última actualización:** 15/11/2026
+**Estado:** Fase 4 — Contenido completa (módulos 0 a 12)  
+**Última actualización:** 18/11/2026
 
 ## 1. Cómo se organiza
 
 El contenido se organiza en **módulos** y cada módulo en **lecciones**. Los módulos siguen un orden sugerido, pero la navegación es libre: podés entrar a cualquier lección desde el índice o el buscador.
 
-La V1 tiene **12 módulos** (más un módulo 0 de introducción). Los primeros 4 se escriben completos; los demás quedan estructurados con su página de presentación y el estado "en preparación".
+La V1 tiene **12 módulos** (más un módulo 0 de introducción), todos escritos y publicados con sus lecciones, ejemplos, ejercicios y quiz.
 
 ### Estados
 
@@ -25,14 +25,14 @@ La V1 tiene **12 módulos** (más un módulo 0 de introducción). Los primeros 4
 | 2 | C# desde cero | Principiante | Completo |
 | 3 | Programación orientada a objetos | Principiante | Completo |
 | 4 | Colecciones, LINQ y genéricos | Principiante | Completo |
-| 5 | Async/await y manejo de errores | Intermedio | En preparación |
-| 6 | ASP.NET Core: APIs REST | Intermedio | En preparación |
-| 7 | EF Core y bases de datos | Intermedio | En preparación |
-| 8 | Testing y calidad | Intermedio | En preparación |
-| 9 | Código limpio, SOLID y patrones | Intermedio | En preparación |
-| 10 | Seguridad y JWT | Intermedio | En preparación |
-| 11 | Arquitectura de aplicaciones | Avanzado | En preparación |
-| 12 | Deploy y mundo laboral | Avanzado | En preparación |
+| 5 | Async/await y manejo de errores | Intermedio | Completo |
+| 6 | ASP.NET Core: APIs REST | Intermedio | Completo |
+| 7 | EF Core y bases de datos | Intermedio | Completo |
+| 8 | Testing y calidad | Intermedio | Completo |
+| 9 | Código limpio, SOLID y patrones | Intermedio | Completo |
+| 10 | Seguridad y JWT | Intermedio | Completo |
+| 11 | Arquitectura de aplicaciones | Avanzado | Completo |
+| 12 | Deploy y mundo laboral | Avanzado | Completo |
 
 ## 3. Módulo 0 — Cómo usar la plataforma
 
@@ -118,7 +118,9 @@ La V1 tiene **12 módulos** (más un módulo 0 de introducción). Los primeros 4
 
 **Resultado esperado:** el usuario transforma y consulta colecciones con LINQ, entiende cuándo se ejecuta una consulta y elige la colección adecuada.
 
-## 8. Módulos 5 a 12 (estructura)
+## 8. Módulos 5 a 12
+
+Cada módulo tiene 9 lecciones publicadas, con ejercicios y quiz. Estas son las temáticas cubiertas.
 
 ### Módulo 5 — Async/await y manejo de errores
 `Task`, `async`/`await`, `CancellationToken`, `try`/`catch`/`finally`, excepciones personalizadas, logging y patrones de resiliencia.
@@ -204,16 +206,15 @@ Enlace a la lección siguiente.
 
 ## 11. Plan de producción de contenido
 
-| Etapa | Contenido | Estimación |
+| Etapa | Contenido | Estado |
 |---|---|---|
-| 1 | Módulo 0 y esqueleto del módulo 1 | 1 semana |
-| 2 | Módulo 1 completo | 1-2 semanas |
-| 3 | Módulo 2 completo | 2 semanas |
-| 4 | Módulo 3 completo | 2 semanas |
-| 5 | Módulo 4 completo | 2 semanas |
-| 6 | Revisión, quizzes y ejercicios | 1 semana |
+| 1 | Módulo 0 y esqueleto del módulo 1 | Completo |
+| 2 | Módulos 1 a 4 (fundamentos, C#, POO y LINQ) | Completo |
+| 3 | Módulos 5 a 8 (async, APIs, EF Core y testing) | Completo |
+| 4 | Módulos 9 a 12 (código limpio, seguridad, arquitectura y deploy) | Completo |
+| 5 | Revisión, quizzes y ejercicios | Completo |
 
-Cada lección requiere entre 2 y 4 horas de escritura, ejemplos y quiz. La estimación total de los 4 módulos ronda las **80-120 horas** de contenido.
+Cada lección requiere entre 2 y 4 horas de escritura, ejemplos y quiz. La ruta completa tiene 13 módulos y más de 100 lecciones publicadas.
 
 ## 12. Checklist de revisión de una lección
 

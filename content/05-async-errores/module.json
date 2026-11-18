@@ -1,15 +1,19 @@
 {
-    "slug":  "async-errores",
-    "title":  "Async/await y manejo de errores",
-    "order":  5,
-    "level":  "Intermedio",
-    "summary":  "Tareas, asincronía, excepciones y logging.",
-    "status":  "planned",
-    "topics":  [
-                   "Task",
-                   "async/await",
-                   "CancellationToken",
-                   "Excepciones",
-                   "Logging"
-               ]
+    "slug": "async-errores",
+    "title": "Async/await y manejo de errores",
+    "order": 5,
+    "level": "Intermedio",
+    "summary": "Tareas, asincronía, excepciones y logging.",
+    "status": "published",
+    "topics": [
+        "Task y asincronía",
+        "async y await",
+        "Errores en código asíncrono",
+        "CancellationToken",
+        "try/catch/finally",
+        "Excepciones personalizadas",
+        "Logging estructurado",
+        "Resiliencia: timeouts y reintentos",
+        "Ejercicio integrador"
+    ]
 }

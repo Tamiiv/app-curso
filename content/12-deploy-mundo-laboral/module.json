@@ -1,17 +1,19 @@
 {
-    "slug":  "deploy-mundo-laboral",
-    "title":  "Deploy y mundo laboral",
-    "order":  12,
-    "level":  "Avanzado",
-    "summary":  "CI/CD, Docker, cloud, observabilidad y entrevistas.",
-    "status":  "planned",
-    "topics":  [
-                   "Entornos",
-                   "CI/CD",
-                   "Docker",
-                   "Cloud",
-                   "Observabilidad",
-                   "Code review",
-                   "Portafolio"
-               ]
+    "slug": "deploy-mundo-laboral",
+    "title": "Deploy y mundo laboral",
+    "order": 12,
+    "level": "Avanzado",
+    "summary": "CI/CD, Docker, cloud, observabilidad y entrevistas.",
+    "status": "published",
+    "topics": [
+        "Entornos y configuración",
+        "Docker para .NET",
+        "CI/CD con GitHub Actions",
+        "Deploy en la nube",
+        "Logs, métricas y salud",
+        "Code review y flujo con Git",
+        "Metodologías ágiles",
+        "Portafolio de proyectos",
+        "Entrevistas y cierre de la ruta"
+    ]
 }

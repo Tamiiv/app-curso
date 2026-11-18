@@ -2,7 +2,7 @@
 
 Plataforma web pública y gratuita para aprender .NET de cero a nivel profesional, en español.
 
-> **Estado:** Fase 5 — Calidad (en curso); deploy público de Fase 1 pendiente.
+> **Estado:** Fase 4 completa (13 módulos publicados). Fase 5 — Calidad en curso; deploy público de Fase 1 pendiente.
 
 ## Stack
 

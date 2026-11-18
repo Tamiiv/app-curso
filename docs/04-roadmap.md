@@ -1,8 +1,8 @@
 # Roadmap
 
 **Proyecto:** Ruta .NET (nombre provisorio)  
-**Estado:** Fase 5 — Calidad (en curso); deploy de Fase 1 pendiente  
-**Última actualización:** 15/11/2026
+**Estado:** Fase 4 — Contenido completa (módulos 0 a 12); Fase 5 en curso y deploy de Fase 1 pendiente  
+**Última actualización:** 18/11/2026
 
 ## Cómo leer este roadmap
 
@@ -122,33 +122,32 @@ Las estimaciones suponen dedicación casi completa y son orientativas. El conten
 
 ---
 
-## Fase 4 — Contenido de los módulos 1 a 4
+## Fase 4 — Contenido de los módulos 0 a 12
 
-**Estado:** completada en local. Módulos 0 a 4 publicados, con ejercicios y quizzes.
+**Estado:** completada. Los 13 módulos están publicados, con ejercicios y quizzes; la suite de contenido valida quizzes y enlaces internos.
 
 **Objetivo:** completar el contenido que hace valiosa la plataforma.
 
 **Tareas**
 
 1. Escribir el módulo 0 (cómo usar la plataforma).
-2. Escribir el módulo 1 (fundamentos de .NET).
-3. Escribir el módulo 2 (C# desde cero).
-4. Escribir el módulo 3 (POO).
-5. Escribir el módulo 4 (colecciones, LINQ y genéricos).
-6. Crear quizzes y ejercicios con solución.
-7. Compilar y probar todos los ejemplos en un proyecto de muestras.
-8. Revisar cada lección con el checklist.
-9. Ajustar navegación y enlaces internos.
+2. Escribir los módulos 1 a 4 (fundamentos, C#, POO y LINQ).
+3. Escribir los módulos 5 a 8 (async, APIs, EF Core y testing).
+4. Escribir los módulos 9 a 12 (código limpio, seguridad, arquitectura y deploy).
+5. Crear quizzes y ejercicios con solución.
+6. Compilar y probar todos los ejemplos en un proyecto de muestras.
+7. Revisar cada lección con el checklist.
+8. Ajustar navegación y enlaces internos.
 
 **Criterio de aceptación**
 
-- Los 4 módulos están completos y publicados.
+- Los 13 módulos están completos y publicados.
 - Todos los ejemplos compilan.
 - Todos los quizzes tienen respuesta y explicación.
 - El checklist de revisión está completo.
 - Un principiante puede seguir la ruta sin quedar trabado.
 
-**Estimación:** 4 a 6 semanas.
+**Estimación:** completada.
 
 ---
 
@@ -187,15 +186,14 @@ Las estimaciones suponen dedicación casi completa y son orientativas. El conten
 
 Ideas para después del lanzamiento, en orden tentativo:
 
-1. Módulos 5 a 12 completos.
-2. Verificación de email.
-3. Historial de quizzes y puntajes.
-4. Página de perfil y preferencias.
-5. Certificados de finalización.
-6. Comunidad o comentarios.
-7. Ejecución de código en la nube.
-8. App móvil o PWA.
-9. Multiidioma.
+1. Verificación de email.
+2. Historial de quizzes y puntajes.
+3. Página de perfil y preferencias.
+4. Certificados de finalización.
+5. Comunidad o comentarios.
+6. Ejecución de código en la nube.
+7. App móvil o PWA.
+8. Multiidioma.
 
 No se implementa nada de esta fase sin evaluar costo, valor y mantenimiento.
 
@@ -233,7 +231,7 @@ Una tarea está terminada cuando:
 
 ## Próximo paso
 
-Terminar la Fase 1:
+Terminar la Fase 1 y cerrar la Fase 5:
 
 1. Crear la base `main` y la rama `dev` en Neon.
 2. Cargar `DATABASE_URL` en local con user-secrets, ejecutar `dotnet ef database update` y verificar `/health/ready`.
@@ -241,5 +239,4 @@ Terminar la Fase 1:
 4. Verificar la URL pública, el health check y que `Database__MigrateOnStartup` aplique el esquema.
 5. Confirmar que el CI pasa en verde.
 6. Configurar backups y el monitor externo según [Operaciones](06-operaciones.md).
-
-Después se cierra la Fase 5 con auditoría manual de accesibilidad con lector de pantalla, Lighthouse, licencia del repositorio y lanzamiento.
+7. Cerrar la Fase 5 con auditoría manual de accesibilidad con lector de pantalla, Lighthouse, licencia del repositorio y lanzamiento.
